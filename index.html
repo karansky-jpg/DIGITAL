@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GRILL MASTERS — Royal Indian Luxury Menu</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Premium Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ivory: {
+                            light: '#FCFBF9',
+                            DEFAULT: '#FAF7F2',
+                            dark: '#F3EFE6',
+                        },
+                        royalGreen: {
+                            light: '#0E4D30',
+                            DEFAULT: '#063A1F',
+                            dark: '#032212',
+                        },
+                        royalBlue: {
+                            light: '#1A365D',
+                            DEFAULT: '#0B2347',
+                            dark: '#040F1F',
+                        },
+                        gold: {
+                            light: '#E5C158',
+                            DEFAULT: '#C5A850',
+                            dark: '#A38436',
+                        },
+                        fireYellow: '#F39C12'
+                    },
+                    fontFamily: {
+                        serifTitle: ['Cinzel', 'serif'],
+                        serifBody: ['Playfair Display', 'serif'],
+                        sansClean: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Block body-level scroll to ensure app-like swiping behavior */
+        html, body {
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+            background-color: #040F1F;
+            font-family: 'Montserrat', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Ivory Paper Texture Simulation */
+        .paper-parchment {
+            background-color: #FAF7F2;
+            background-image: 
+                radial-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 0), 
+                radial-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 0);
+            background-size: 12px 12px;
+            background-position: 0 0, 6px 6px;
+            position: relative;
+        }
+
+        /* 100% Reliable GPU Slide Transitions (No 3D render-drop bugs) */
+        .menu-page {
+            display: none;
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .menu-page.active {
+            display: flex;
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Background Slate/Grey Wood Texture Style */
+        .bg-wood-slate {
+            background: linear-gradient(135deg, #3A3D40 0%, #181A1B 100%);
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Premium Gold Filigree Corners */
+        .filigree-corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-color: #C5A850;
+            pointer-events: none;
+        }
+        .f-tl { top: 12px; left: 12px; border-top: 2px solid; border-left: 2px solid; }
+        .f-tr { top: 12px; right: 12px; border-top: 2px solid; border-right: 2px solid; }
+        .f-bl { bottom: 12px; left: 12px; border-bottom: 2px solid; border-left: 2px solid; }
+        .f-br { bottom: 12px; right: 12px; border-bottom: 2px solid; border-right: 2px solid; }
+
+        /* Elegant Thin Frame Inside Paper */
+        .page-border-frame {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: 6px;
+            bottom: 6px;
+            border: 1px solid rgba(197, 168, 80, 0.25);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+
+        /* Premium Scrollbar */
+        .scroll-premium::-webkit-scrollbar {
+            width: 4px;
+        }
+        .scroll-premium::-webkit-scrollbar-track {
+            background: rgba(11, 35, 71, 0.05);
+        }
+        .scroll-premium::-webkit-scrollbar-thumb {
+            background: #C5A850;
+            border-radius: 9px;
+        }
+    </style>
+</head>
+<body class="flex flex-col justify-between select-none">
+
+    <!-- TOP PERPETUAL BAR (Simple Font, Every Page) -->
+    <header class="w-full text-center py-2 text-[10px] sm:text-xs tracking-[0.25em] text-gold uppercase font-sansClean bg-royalBlue-dark border-b border-gold/25 z-50">
+        Created By Karan Digital Menu Agency
+    </header>
+
+    <!-- MAIN APP CANVAS / BOOK CONTAINER -->
+    <main class="flex-grow w-full relative flex items-center justify-center p-2 sm:p-4">
+        
+        <!-- Left/Right Desktop Navigation Buttons -->
+        <button onclick="prevPage()" class="hidden md:flex absolute left-8 z-50 w-12 h-12 rounded-full border border-gold/50 bg-royalBlue/90 hover:bg-royalBlue text-gold justify-center items-center transition shadow-[0_4px_12px_rgba(0,0,0,0.5)] hover:scale-105" aria-label="Previous Page">
+            <i class="fas fa-arrow-left text-base"></i>
+        </button>
+        <button onclick="nextPage()" class="hidden md:flex absolute right-8 z-50 w-12 h-12 rounded-full border border-gold/50 bg-royalBlue/90 hover:bg-royalBlue text-gold justify-center items-center transition shadow-[0_4px_12px_rgba(0,0,0,0.5)] hover:scale-105" aria-label="Next Page">
+            <i class="fas fa-arrow-right text-base"></i>
+        </button>
+
+        <!-- BOOK WINDOW - Fixed Viewport Wrapper -->
+        <div id="book" class="w-full max-w-lg md:max-w-xl h-[78vh] sm:h-[75vh] relative rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.85)] border-2 border-gold/40 overflow-hidden bg-ivory">
+            
+            <!-- PAGE 1: LUXURY COVER -->
+            <section id="page-1" class="menu-page active paper-parchment p-6 flex flex-col justify-between items-center text-center w-full h-full">
+                <div class="page-border-frame"></div>
+                <div class="filigree-corner f-tl"></div><div class="filigree-corner f-tr"></div>
+                <div class="filigree-corner f-bl"></div><div class="filigree-corner f-br"></div>
+
+                <!-- Top Primary Logo -->
+                <div class="mt-4 flex flex-col items-center">
+                    <div class="w-36 h-36 rounded-full p-1 bg-gradient-to-b from-gold to-royalGreen shadow-lg flex items-center justify-center overflow-hidden">
+                        <img src="https://i.ibb.co/bgndD7hK/Screenshot-20260518-144001-Chrome.jpg" 
+                             alt="Grill Masters Primary Logo" 
+                             class="w-full h-full object-cover rounded-full"
+                             onerror="this.src='https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=300';">
+                    </div>
+                    <p class="mt-3 text-[11px] tracking-widest font-sansClean text-royalGreen font-bold uppercase">
+                        TASTE AND HEALTH WRAPPED TOGETHER
+                    </p>
+                </div>
+
+                <!-- Center Decorative Logo (Colors Preserved) -->
+                <div class="my-auto flex flex-col items-center">
+                    <div class="w-28 h-28 rounded-lg p-0.5 bg-gold shadow-md">
+                        <img src="https://i.ibb.co/84bMbV7S/Screenshot-20260429-174505-Gallery.jpg" 
+                             alt="Grill Masters Decorative Emblem" 
+                             class="w-full h-full object-cover rounded"
+                             onerror="this.src='https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=300';">
+                    </div>
+                </div>
+
+                <!-- Cover Footer Typography -->
+                <div class="mb-4 z-10">
+                    <h1 class="font-serifTitle text-2xl sm:text-3xl text-royalBlue font-black tracking-widest uppercase mb-1">
+                        GRILL MASTERS
+                    </h1>
+                    <div class="h-[1.5px] w-24 bg-gold mx-auto mb-2"></div>
+                    <p class="text-[9px] uppercase font-sansClean text-gold-dark font-extrabold tracking-[0.2em] animate-pulse flex items-center justify-center gap-2">
+                        <i class="fas fa-hand-pointer text-gold animate-bounce"></i> SWIPE LEFT TO EXPLORE MENU
+                    </p>
+                </div>
+            </section>
+
+
+            <!-- PAGE 2: PIZZAS -->
+            <section id="page-2" class="menu-page paper-parchment p-4 sm:p-5 flex flex-col justify-between w-full h-full">
+                <div class="page-border-frame"></div>
+                <div class="filigree-corner f-tl"></div><div class="filigree-corner f-tr"></div>
+                <div class="filigree-corner f-bl"></div><div class="filigree-corner f-br"></div>
+
+                <div class="text-center font-serifTitle text-[9px] text-royalBlue/40 uppercase tracking-[0.2em] mb-1 z-10">
+                    GRILL MASTERS — CATALOGUE
+                </div>
+
+                <!-- Large Fire Yellow on Grey Wooden Background Category Header -->
+                <div class="bg-wood-slate rounded-lg py-2 px-3 mb-3 text-center shadow-lg z-10">
+                    <h2 class="font-serifTitle text-lg sm:text-xl font-extrabold text-fireYellow tracking-[0.25em] uppercase">
+                        PIZZA
+                    </h2>
+                </div>
+
+                <!-- Scrollable Menu Area -->
+                <div class="flex-grow overflow-y-auto scroll-premium pr-1 z-10">
+                    
+                    <!-- VEG PIZZA -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold flex justify-between items-center">
+                            <span>VEG PIZZA</span>
+                            <span class="text-[9px] text-gold-light font-sansClean">R / M</span>
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-semibold">Cheese Margherita</span>
+                                <span class="text-xs font-bold font-sansClean text-royalGreen">₹170 / ₹310</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-semibold">Veggie Garden</span>
+                                <span class="text-xs font-bold font-sansClean text-royalGreen">₹170 / ₹310</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Sweet Corn Treat <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold font-sansClean text-royalGreen">₹170 / ₹310</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-semibold">Farm Fresh</span>
+                                <span class="text-xs font-bold font-sansClean text-royalGreen">₹200 / ₹330</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Paneer Bingo <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold font-sansClean text-royalGreen">₹200 / ₹330</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-semibold">Paneer Tikka</span>
+                                <span class="text-xs font-bold font-sansClean text-royalGreen">₹240 / ₹390</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Punjabi Paneer Pizza <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold font-sansClean text-royalGreen">₹240 / ₹390</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalGreen font-extrabold">GRILL'S SPECIAL</span>
+                                <span class="text-xs font-bold font-sansClean text-royalGreen">₹240 / ₹390</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- THIN CRUST PIZZA -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            THIN CRUST PIZZA
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-semibold">Mushroom Pizza</span>
+                                <span class="text-xs font-bold font-sansClean text-royalGreen">₹390</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-semibold">Peri Peri Paneer Pizza</span>
+                                <span class="text-xs font-bold font-sansClean text-royalGreen">₹390</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-semibold">Veggie Monster Pizza</span>
+                                <span class="text-xs font-bold font-sansClean text-royalGreen">₹390</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CLASSIC SINGLES -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            CLASSIC SINGLES
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-semibold">Onion Pizza</span>
+                                <span class="text-xs font-bold font-sansClean text-royalGreen">₹80</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-semibold">Corn Pizza</span>
+                                <span class="text-xs font-bold font-sansClean text-royalGreen">₹80</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Paneer Pizza <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold font-sansClean text-royalGreen">₹100</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ADD-ONS -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold flex justify-between items-center">
+                            <span>ADD-ONS</span>
+                            <span class="text-[9px] text-gold-light font-sansClean">R / M</span>
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-semibold">Any Topping</span>
+                                <span class="text-xs font-bold font-sansClean text-royalGreen">₹20 / ₹30</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-semibold">Extra Cheese</span>
+                                <span class="text-xs font-bold font-sansClean text-royalGreen">₹30 / ₹50</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-semibold">Cheese Burst Base</span>
+                                <span class="text-xs font-bold font-sansClean text-royalGreen">₹60 / ₹90</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NON-VEG PIZZA -->
+                    <div class="mb-2">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold flex justify-between items-center">
+                            <span>NON-VEG PIZZA</span>
+                            <span class="text-[9px] text-gold-light font-sansClean">R / M</span>
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-semibold">Grilled Chicken Pizza</span>
+                                <span class="text-xs font-bold font-sansClean text-royalGreen">₹250 / ₹420</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Peri Peri Chicken Pizza <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold font-sansClean text-royalGreen">₹280 / ₹450</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Page Number -->
+                <div class="text-center font-serifTitle text-xs font-bold text-royalBlue mt-2 pt-1 border-t border-gold/20 z-10">
+                    — PAGE II —
+                </div>
+            </section>
+
+
+            <!-- PAGE 3: BURGERS, NOODLES, SIDES -->
+            <section id="page-3" class="menu-page paper-parchment p-4 sm:p-5 flex flex-col justify-between w-full h-full">
+                <div class="page-border-frame"></div>
+                <div class="filigree-corner f-tl"></div><div class="filigree-corner f-tr"></div>
+                <div class="filigree-corner f-bl"></div><div class="filigree-corner f-br"></div>
+
+                <div class="text-center font-serifTitle text-[9px] text-royalBlue/40 uppercase tracking-[0.2em] mb-1 z-10">
+                    GRILL MASTERS — CATALOGUE
+                </div>
+
+                <!-- Scrollable Menu Area -->
+                <div class="flex-grow overflow-y-auto scroll-premium pr-1 z-10 mt-2">
+                    
+                    <!-- VEG BURGER -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold flex justify-between items-center">
+                            <span>VEG BURGER</span>
+                            <span class="text-[8px] text-gold-light font-sansClean">REG. / W. WHEAT</span>
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Junior</span>
+                                <span class="text-xs font-bold text-royalGreen">₹60 / ₹70</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    TEXAS <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹80 / ₹90</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Creamy Burger <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹80 / ₹90</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Chana Patty Burger</span>
+                                <span class="text-xs font-bold text-royalGreen">₹80 / ₹90</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">American Burger</span>
+                                <span class="text-xs font-bold text-royalGreen">₹90 / ₹100</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Paneer Crisp <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹100 / ₹110</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Giga Bite <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹110 / ₹120</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Texas Paneer <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹110 / ₹120</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Paneer Makhani Burger</span>
+                                <span class="text-xs font-bold text-royalGreen">₹120 / ₹130</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-semibold">Paneer Veg Mountain</span>
+                                <span class="text-xs font-bold text-royalGreen">₹150 / ₹160</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NON-VEG BURGERS -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold flex justify-between items-center">
+                            <span>NON-VEG BURGERS</span>
+                            <span class="text-[8px] text-gold-light font-sansClean">REG. / W. WHEAT</span>
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Compact Burger</span>
+                                <span class="text-xs font-bold text-royalGreen">₹80 / ₹90</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Bad Boy</span>
+                                <span class="text-xs font-bold text-royalGreen">₹100 / ₹110</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Big Devil</span>
+                                <span class="text-xs font-bold text-royalGreen">₹120 / ₹130</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Illeagle Burger</span>
+                                <span class="text-xs font-bold text-royalGreen">₹130 / ₹140</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Grilled Chicken Burger <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹150 / ₹160</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-semibold">Chicken Mountain Burger</span>
+                                <span class="text-xs font-bold text-royalGreen">₹170 / ₹180</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TACO -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            TACO
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Veggie Taco</span>
+                                <span class="text-xs font-bold text-royalGreen">₹110</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Paneer Taco</span>
+                                <span class="text-xs font-bold text-royalGreen">₹130</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GARLIC BREAD -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            GARLIC BREAD
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Garlic Breadsticks</span>
+                                <span class="text-xs font-bold text-royalGreen">₹80</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Cheese Garlic Bread <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹120</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Exotic Garlic Bread</span>
+                                <span class="text-xs font-bold text-royalGreen">₹130</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NOODLES -->
+                    <div class="mb-2">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            NOODLES
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Desi Chowmein <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹120</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Veg Noodles</span>
+                                <span class="text-xs font-bold text-royalGreen">₹120</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Hakka Noodles</span>
+                                <span class="text-xs font-bold text-royalGreen">₹150</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Paneer Noodles <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹150</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Mirchi Noodles</span>
+                                <span class="text-xs font-bold text-royalGreen">₹160</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Dragon Special Noodles <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹170</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="text-center font-serifTitle text-xs font-bold text-royalBlue mt-2 pt-1 border-t border-gold/20 z-10">
+                    — PAGE III —
+                </div>
+            </section>
+
+
+            <!-- PAGE 4: WRAPS, SOUPS, NACHOS -->
+            <section id="page-4" class="menu-page paper-parchment p-4 sm:p-5 flex flex-col justify-between w-full h-full">
+                <div class="page-border-frame"></div>
+                <div class="filigree-corner f-tl"></div><div class="filigree-corner f-tr"></div>
+                <div class="filigree-corner f-bl"></div><div class="filigree-corner f-br"></div>
+
+                <div class="text-center font-serifTitle text-[9px] text-royalBlue/40 uppercase tracking-[0.2em] mb-1 z-10">
+                    GRILL MASTERS — CATALOGUE
+                </div>
+
+                <div class="flex-grow overflow-y-auto scroll-premium pr-1 z-10 mt-2">
+
+                    <!-- VEG WRAPS -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold flex justify-between items-center">
+                            <span>VEG WRAPS</span>
+                            <span class="text-[8px] text-gold-light font-sansClean">REG. / W. WHEAT</span>
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Veg Wrap</span>
+                                <span class="text-xs font-bold text-royalGreen">₹120 / ₹130</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Chana Patty Wrap</span>
+                                <span class="text-xs font-bold text-royalGreen">₹120 / ₹130</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Mexican Tortilla <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹130 / ₹140</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Hara Bhara Kebab Wrap <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹140 / ₹150</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Crunchy Paneer Wrap <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹140 / ₹150</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Grilled Paneer Wrap</span>
+                                <span class="text-xs font-bold text-royalGreen">₹150 / ₹160</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Peri Peri Paneer Wrap <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹150 / ₹160</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Paneer Makhani Wrap</span>
+                                <span class="text-xs font-bold text-royalGreen">₹150 / ₹160</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NON-VEG WRAPS -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold flex justify-between items-center">
+                            <span>NON-VEG WRAPS</span>
+                            <span class="text-[8px] text-gold-light font-sansClean">REG. / W. WHEAT</span>
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Grilled Chicken Wrap</span>
+                                <span class="text-xs font-bold text-royalGreen">₹140 / ₹150</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Chicken Makhani wrap</span>
+                                <span class="text-xs font-bold text-royalGreen">₹150 / ₹160</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Chicken Tikka Wrap <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹160 / ₹170</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BRUSCHETTA -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            BRUSCHETTA
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Cheese Bruschetta</span>
+                                <span class="text-xs font-bold text-royalGreen">₹120</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Corn & Mushroom Bruschetta</span>
+                                <span class="text-xs font-bold text-royalGreen">₹130</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NACHOS -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            NACHOS
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Makhani Nachos</span>
+                                <span class="text-xs font-bold text-royalGreen">₹120</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Baked Makhani Nachos</span>
+                                <span class="text-xs font-bold text-royalGreen">₹150</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Mexican Nachos <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹120</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Baked Mexican Nachos</span>
+                                <span class="text-xs font-bold text-royalGreen">₹150</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SPRING ROLLS -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            SPRING ROLLS
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Veg Spring Rolls <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹130</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Veg Kurkure Spring Rolls <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹150</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SOUPS -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            SOUPS
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Veg Manchow Soup <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹80</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Sweet & Sour Soup</span>
+                                <span class="text-xs font-bold text-royalGreen">₹80</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Mushroom & Corn Soup</span>
+                                <span class="text-xs font-bold text-royalGreen">₹80</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Hot & Sour Soup</span>
+                                <span class="text-xs font-bold text-royalGreen">₹80</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBS -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            SUBS
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Veg Sub</span>
+                                <span class="text-xs font-bold text-royalGreen">₹140</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Crunchy Paneer Sub <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹160</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Grilled Paneer Sub</span>
+                                <span class="text-xs font-bold text-royalGreen">₹160</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NON VEG. SUBS -->
+                    <div class="mb-2">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            NON VEG. SUBS
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Grilled Chicken Sub</span>
+                                <span class="text-xs font-bold text-royalGreen">₹160</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Makhani Chicken Sub</span>
+                                <span class="text-xs font-bold text-royalGreen">₹170</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="text-center font-serifTitle text-xs font-bold text-royalBlue mt-2 pt-1 border-t border-gold/20 z-10">
+                    — PAGE IV —
+                </div>
+            </section>
+
+
+            <!-- PAGE 5: SANDWICHES, PASTA & SIDES -->
+            <section id="page-5" class="menu-page paper-parchment p-4 sm:p-5 flex flex-col justify-between w-full h-full">
+                <div class="page-border-frame"></div>
+                <div class="filigree-corner f-tl"></div><div class="filigree-corner f-tr"></div>
+                <div class="filigree-corner f-bl"></div><div class="filigree-corner f-br"></div>
+
+                <div class="text-center font-serifTitle text-[9px] text-royalBlue/40 uppercase tracking-[0.2em] mb-1 z-10">
+                    GRILL MASTERS — CATALOGUE
+                </div>
+
+                <div class="flex-grow overflow-y-auto scroll-premium pr-1 z-10 mt-2">
+
+                    <!-- VEG GRILLED SANDWICHES -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            VEG GRILLED SANDWICHES
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Veg & Cheese Sandwich</span>
+                                <span class="text-xs font-bold text-royalGreen">₹100</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Cheesy corn <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹120</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Mexican Wave</span>
+                                <span class="text-xs font-bold text-royalGreen">₹130</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Mushroom Corn <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹150</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Paneer Tikka Sandwich</span>
+                                <span class="text-xs font-bold text-royalGreen">₹160</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NON-VEG GRILLED SANDWICHES -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            NON-VEG GRILLED SANDWICHES
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Grilled Chicken Sandwich</span>
+                                <span class="text-xs font-bold text-royalGreen">₹150</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Makhani Chicken Sandwich <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹170</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PASTA BANNER -->
+                    <div class="bg-wood-slate rounded-lg py-2 px-3 mb-3 text-center shadow shadow-black">
+                        <h2 class="font-serifTitle text-sm sm:text-base font-extrabold text-fireYellow tracking-[0.2em] uppercase">
+                            PASTA-LA-VISTA
+                        </h2>
+                        <p class="text-[9px] font-sansClean font-bold text-white uppercase tracking-widest mt-0.5">
+                            (Served with Garlic Bread)
+                        </p>
+                    </div>
+
+                    <!-- PASTA-LA-VISTA LIST -->
+                    <div class="mb-4">
+                        <div class="flex justify-end pr-2 mb-1">
+                            <span class="text-[8px] text-gold-dark font-extrabold tracking-widest">REG. / BAKED</span>
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    White Sauce Pasta <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹160 / ₹190</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Red Sauce Pasta <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹160 / ₹190</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Mix Sauce Pasta</span>
+                                <span class="text-xs font-bold text-royalGreen">₹170 / ₹200</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Tandoori Pasta</span>
+                                <span class="text-xs font-bold text-royalGreen">₹170 / ₹200</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Makhani Pasta</span>
+                                <span class="text-xs font-bold text-royalGreen">₹170 / ₹200</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SIDES -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            SIDES
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Classic Fries</span>
+                                <span class="text-xs font-bold text-royalGreen">₹80</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Peri Peri Fries <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹100</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Bombay Fries <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹110</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Hara Bhara Kebab</span>
+                                <span class="text-xs font-bold text-royalGreen">₹120</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Cheese Loaded Fries</span>
+                                <span class="text-xs font-bold text-royalGreen">₹130</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Peri Peri Cheese Loaded Fries</span>
+                                <span class="text-xs font-bold text-royalGreen">₹140</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Bombay Cheese Loaded Fries</span>
+                                <span class="text-xs font-bold text-royalGreen">₹140</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-semibold">Chicken Nuggets</span>
+                                <span class="text-xs font-bold text-royalGreen">₹150</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FRIED RICE -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            FRIED RICE
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Veg Fried Rice <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹130</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Paneer Fried Rice</span>
+                                <span class="text-xs font-bold text-royalGreen">₹150</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Paneer Chilly Garlic Fried Rice <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹160</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Dragon Special Fried Rice</span>
+                                <span class="text-xs font-bold text-royalGreen">₹170</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SALADS -->
+                    <div class="mb-2">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            SALADS
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Veg Crunch Salad <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹130</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Veg Gym Diet</span>
+                                <span class="text-xs font-bold text-royalGreen">₹150</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Grilled Paneer Salad</span>
+                                <span class="text-xs font-bold text-royalGreen">₹150</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Paneer Crunch Salad <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹160</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Chicken Gym Diet <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹160</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Grilled Chicken Salad <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹170</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="text-center font-serifTitle text-xs font-bold text-royalBlue mt-2 pt-1 border-t border-gold/20 z-10">
+                    — PAGE V —
+                </div>
+            </section>
+
+
+            <!-- PAGE 6: DRINKS, SHAKES & COFFEES -->
+            <section id="page-6" class="menu-page paper-parchment p-4 sm:p-5 flex flex-col justify-between w-full h-full">
+                <div class="page-border-frame"></div>
+                <div class="filigree-corner f-tl"></div><div class="filigree-corner f-tr"></div>
+                <div class="filigree-corner f-bl"></div><div class="filigree-corner f-br"></div>
+
+                <div class="text-center font-serifTitle text-[9px] text-royalBlue/40 uppercase tracking-[0.2em] mb-1 z-10">
+                    GRILL MASTERS — CATALOGUE
+                </div>
+
+                <div class="flex-grow overflow-y-auto scroll-premium pr-1 z-10 mt-2">
+
+                    <!-- STARTERS -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            STARTERS
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Chilly Potato</span>
+                                <span class="text-xs font-bold text-royalGreen">₹130</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Honey Chilly Potato</span>
+                                <span class="text-xs font-bold text-royalGreen">₹150</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Crispy Corn</span>
+                                <span class="text-xs font-bold text-royalGreen">₹150</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Manchurian (Dry / Gravy)</span>
+                                <span class="text-xs font-bold text-royalGreen">₹150 / 170</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Mushroom Chilly Latpata</span>
+                                <span class="text-xs font-bold text-royalGreen">₹170</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Cheese Chilly (Dry / Gravy)</span>
+                                <span class="text-xs font-bold text-royalGreen">₹170 / 190</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Paneer Hong Kong</span>
+                                <span class="text-xs font-bold text-royalGreen">₹200</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DESSERTS -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            DESSERTS
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Oreo Crunch Ice Cream <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹80</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Choco Lava Cake</span>
+                                <span class="text-xs font-bold text-royalGreen">₹90</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Hot Brownie</span>
+                                <span class="text-xs font-bold text-royalGreen">₹100</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Hot Chocolate</span>
+                                <span class="text-xs font-bold text-royalGreen">₹100</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Hot Brownie with Ice Cream <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹150</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HOT COFFEE -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            HOT COFFEE
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Espresso Shot</span>
+                                <span class="text-xs font-bold text-royalGreen">₹60</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Kali Coffee</span>
+                                <span class="text-xs font-bold text-royalGreen">₹70</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Cappuccino <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹100</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Café Latte <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹140</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Café Mocha</span>
+                                <span class="text-xs font-bold text-royalGreen">₹150</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Hazelnut Latte</span>
+                                <span class="text-xs font-bold text-royalGreen">₹150</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Irish Latte</span>
+                                <span class="text-xs font-bold text-royalGreen">₹150</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ICE TEA -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            ICE TEA
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Lemon Ice Tea <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹80</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Blueberry Ice Tea <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹100</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Watermelon Ice Tea</span>
+                                <span class="text-xs font-bold text-royalGreen">₹100</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MOJITOS -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            MOJITOS
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Sweet Lime Mojito <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹90</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Virgin Mojito</span>
+                                <span class="text-xs font-bold text-royalGreen">₹90</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Blueberry Mojito</span>
+                                <span class="text-xs font-bold text-royalGreen">₹90</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Watermelon Mojito <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹90</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Green Apple Mojito</span>
+                                <span class="text-xs font-bold text-royalGreen">₹90</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Kala Khatta Mojito <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹90</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- COLD COFFEE -->
+                    <div class="mb-4">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            COLD COFFEE
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Cold Coffee <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹110</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Iced Cappuccino <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹110</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Caramel Coffee</span>
+                                <span class="text-xs font-bold text-royalGreen">₹120</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Iced Latte</span>
+                                <span class="text-xs font-bold text-royalGreen">₹140</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Irish Cold Coffee</span>
+                                <span class="text-xs font-bold text-royalGreen">₹140</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Hazelnut Cold Coffee</span>
+                                <span class="text-xs font-bold text-royalGreen">₹140</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SHAKES -->
+                    <div class="mb-2">
+                        <div class="bg-royalGreen text-[#FCFBF7] py-1 px-3 rounded text-[11px] font-bold font-serifTitle tracking-widest uppercase mb-2 border-l-4 border-gold">
+                            SHAKES
+                        </div>
+                        <div class="space-y-1.5 pl-1">
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Vanilla Shake</span>
+                                <span class="text-xs font-bold text-royalGreen">₹100</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Strawberry Shake</span>
+                                <span class="text-xs font-bold text-royalGreen">₹100</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Butterscotch Shake <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹110</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Chocolate Shake</span>
+                                <span class="text-xs font-bold text-royalGreen">₹110</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue">Black Currant Shake</span>
+                                <span class="text-xs font-bold text-royalGreen">₹110</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-bold flex items-center">
+                                    Oreo Shake <i class="fas fa-star text-[9px] text-gold ml-1"></i>
+                                </span>
+                                <span class="text-xs font-bold text-royalGreen">₹140</span>
+                            </div>
+                            <div class="flex justify-between items-baseline border-b border-royalBlue/10 pb-1">
+                                <span class="text-xs sm:text-sm font-serifBody text-royalBlue font-semibold">Brownie Shake</span>
+                                <span class="text-xs font-bold text-royalGreen">₹140</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="text-center font-serifTitle text-xs font-bold text-royalBlue mt-2 pt-1 border-t border-gold/20 z-10">
+                    — PAGE VI —
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER NAV AND PULL-UP FEEDBACK -->
+    <footer class="w-full relative z-40 bg-royalBlue-dark pb-2 pt-1 border-t border-gold/25 flex flex-col items-center">
+        <!-- Interactive Navigation Dots -->
+        <div class="flex space-x-3 my-2">
+            <span onclick="setPage(1)" class="page-dot w-2.5 h-2.5 rounded-full border border-gold/50 cursor-pointer transition bg-gold"></span>
+            <span onclick="setPage(2)" class="page-dot w-2.5 h-2.5 rounded-full border border-gold/50 cursor-pointer transition bg-transparent"></span>
+            <span onclick="setPage(3)" class="page-dot w-2.5 h-2.5 rounded-full border border-gold/50 cursor-pointer transition bg-transparent"></span>
+            <span onclick="setPage(4)" class="page-dot w-2.5 h-2.5 rounded-full border border-gold/50 cursor-pointer transition bg-transparent"></span>
+            <span onclick="setPage(5)" class="page-dot w-2.5 h-2.5 rounded-full border border-gold/50 cursor-pointer transition bg-transparent"></span>
+            <span onclick="setPage(6)" class="page-dot w-2.5 h-2.5 rounded-full border border-gold/50 cursor-pointer transition bg-transparent"></span>
+        </div>
+
+        <!-- Pull-up Feedbar Button -->
+        <button onclick="toggleFeedback(true)" class="flex items-center space-x-2 py-1 px-5 border border-gold/30 rounded-t-xl bg-royalBlue text-[#FCFBF7] text-[11px] font-sansClean tracking-widest uppercase hover:text-gold transition duration-300">
+            <i class="fas fa-envelope-open-text text-gold animate-bounce"></i>
+            <span>Share Feedback</span>
+        </button>
+    </footer>
+
+    <!-- INTERACTIVE FEEDBACK SHEET MODAL -->
+    <div id="feedback-drawer" class="fixed inset-x-0 bottom-0 z-50 transform translate-y-full transition-transform duration-500 ease-out flex justify-center px-4 max-w-lg mx-auto">
+        <div class="w-full bg-[#FCFBF7] border-t-4 border-gold rounded-t-3xl shadow-2xl p-6 relative">
+            <div onclick="toggleFeedback(false)" class="w-12 h-1.5 bg-stone-300 rounded-full mx-auto mb-4 cursor-pointer"></div>
+            <button onclick="toggleFeedback(false)" class="absolute top-4 right-4 text-stone-400 hover:text-stone-700" aria-label="Close">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+
+            <h3 class="font-serifTitle text-base text-royalBlue font-bold tracking-wider text-center mb-1">
+                GRILL MASTERS REVIEW
+            </h3>
+            <p class="text-[9px] text-stone-500 text-center uppercase tracking-widest font-sansClean mb-4">
+                Will send to karrranverma@gmail.com
+            </p>
+
+            <form onsubmit="sendFeedback(event)" class="space-y-3.5">
+                <div>
+                    <label class="block text-xs font-bold text-royalBlue uppercase tracking-wider mb-1">Your Name</label>
+                    <input type="text" id="fb-name" required placeholder="Enter your name" class="w-full bg-stone-100 border border-stone-300 focus:border-gold focus:bg-white rounded-lg p-2.5 text-xs font-medium outline-none transition">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-royalBlue uppercase tracking-wider mb-1">Rating</label>
+                    <div class="flex items-center space-x-3 text-stone-300">
+                        <span onclick="setRating(1)" class="star-rating cursor-pointer text-xl text-gold"><i class="fas fa-star"></i></span>
+                        <span onclick="setRating(2)" class="star-rating cursor-pointer text-xl text-gold"><i class="fas fa-star"></i></span>
+                        <span onclick="setRating(3)" class="star-rating cursor-pointer text-xl text-gold"><i class="fas fa-star"></i></span>
+                        <span onclick="setRating(4)" class="star-rating cursor-pointer text-xl text-gold"><i class="fas fa-star"></i></span>
+                        <span onclick="setRating(5)" class="star-rating cursor-pointer text-xl text-gold"><i class="fas fa-star"></i></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-royalBlue uppercase tracking-wider mb-1">Message</label>
+                    <textarea id="fb-comment" required rows="3" placeholder="Share your dining feedback..." class="w-full bg-stone-100 border border-stone-300 focus:border-gold focus:bg-white rounded-lg p-2.5 text-xs font-medium outline-none transition"></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-2.5 bg-royalGreen text-[#FCFBF7] hover:bg-royalGreen-dark rounded-xl text-xs font-bold tracking-widest uppercase shadow transition border border-gold/40 flex justify-center items-center gap-2">
+                    <i class="fas fa-paper-plane text-gold"></i> Send Feedback
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- BACKDROP SHEET COVERS -->
+    <div id="drawer-backdrop" onclick="toggleFeedback(false)" class="fixed inset-0 bg-black/70 z-40 hidden backdrop-blur-sm"></div>
+
+    <div id="audio-toast" class="fixed top-14 left-1/2 transform -translate-x-1/2 z-50 bg-royalGreen border border-gold/40 py-2 px-4 rounded-full text-[9px] sm:text-xs text-white tracking-widest uppercase flex items-center gap-2 shadow-2xl transition duration-500 opacity-0 pointer-events-none">
+        <i class="fas fa-volume-up text-gold"></i> Page Rustle Audio Triggered
+    </div>
+
+    <!-- MAIN APP SWIPE & SOUND CONTROLLER -->
+    <script>
+        let currentPage = 1;
+        const totalPages = 6;
+        let selectedRating = 5;
+
+        // Custom High-End Web Audio ASMR Paper Flip Synthesizer
+        function triggerAsmrFlipSound() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                
+                const ctx = new AudioCtx();
+                const bufferSize = ctx.sampleRate * 0.4;
+                const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                const channelData = buffer.getChannelData(0);
+
+                let val1 = 0, val2 = 0, val3 = 0, val4 = 0, val5 = 0;
+                for (let i = 0; i < bufferSize; i++) {
+                    let w = Math.random() * 2 - 1;
+                    val1 = 0.99886 * val1 + w * 0.0555179;
+                    val2 = 0.99332 * val2 + w * 0.0750759;
+                    val3 = 0.96900 * val3 + w * 0.1538520;
+                    val4 = 0.86650 * val4 + w * 0.3104856;
+                    val5 = 0.55000 * val5 + w * 0.5329522;
+                    channelData[i] = (val1 + val2 + val3 + val4 + val5 + w * 0.53) * 0.06; 
+                }
+
+                const noise = ctx.createBufferSource();
+                noise.buffer = buffer;
+
+                const highpass = ctx.createBiquadFilter();
+                highpass.type = 'highpass';
+                highpass.frequency.setValueAtTime(300, ctx.currentTime);
+                highpass.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.25);
+
+                const gainNode = ctx.createGain();
+                gainNode.gain.setValueAtTime(0, ctx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0.6, ctx.currentTime + 0.04);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.38);
+
+                noise.connect(highpass);
+                highpass.connect(gainNode);
+                gainNode.connect(ctx.destination);
+
+                noise.start();
+
+                // Flash custom audio activation Toast on active page change
+                const toast = document.getElementById('audio-toast');
+                toast.classList.remove('opacity-0');
+                toast.classList.add('opacity-100');
+                setTimeout(() => {
+                    toast.classList.remove('opacity-100');
+                    toast.classList.add('opacity-0');
+                }, 1000);
+
+            } catch (err) {
+                console.warn("Audio Context init pending User action.");
+            }
+        }
+
+        // SWIPE INTERACTION MECHANISM
+        let touchXStart = 0;
+        let touchYStart = 0;
+        let touchXEnd = 0;
+        let touchYEnd = 0;
+
+        const book = document.getElementById('book');
+
+        book.addEventListener('touchstart', (e) => {
+            touchXStart = e.changedTouches[0].screenX;
+            touchYStart = e.changedTouches[0].screenY;
+        }, {passive: true});
+
+        book.addEventListener('touchend', (e) => {
+            touchXEnd = e.changedTouches[0].screenX;
+            touchYEnd = e.changedTouches[0].screenY;
+            processSwipeGestures();
+        }, {passive: true});
+
+        function processSwipeGestures() {
+            const xDiff = touchXStart - touchXEnd;
+            const yDiff = touchYStart - touchYEnd;
+
+            // Confirm horizontal sweep trajectory
+            if (Math.abs(xDiff) > Math.abs(yDiff)) {
+                if (Math.abs(xDiff) > 35) { // Minimum Swipe threshold
+                    if (xDiff > 0) {
+                        nextPage(); // swipe to next
+                    } else {
+                        prevPage(); // swipe to prev
+                    }
+                }
+            } else {
+                if (yDiff > 60) {
+                    toggleFeedback(true); // Drag open feedback menu
+                }
+            }
+        }
+
+        // SWIPE ACTION ROUTERS
+        function nextPage() {
+            if (currentPage < totalPages) {
+                setPage(currentPage + 1);
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                setPage(currentPage - 1);
+            }
+        }
+
+        function setPage(pageNum) {
+            if (pageNum < 1 || pageNum > totalPages) return;
+
+            // Hide currently active page
+            const activePage = document.querySelector('.menu-page.active');
+            if (activePage) {
+                activePage.classList.remove('active');
+            }
+
+            // Show and trigger animation for requested page
+            const targetPage = document.getElementById(`page-${pageNum}`);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+
+            currentPage = pageNum;
+            updatePaginationDots();
+            triggerAsmrFlipSound();
+        }
+
+        function updatePaginationDots() {
+            const dots = document.querySelectorAll('.page-dot');
+            dots.forEach((dot, index) => {
+                if (index + 1 === currentPage) {
+                    dot.className = "page-dot w-2.5 h-2.5 rounded-full border border-gold/50 cursor-pointer transition bg-gold";
+                } else {
+                    dot.className = "page-dot w-2.5 h-2.5 rounded-full border border-gold/50 cursor-pointer transition bg-transparent";
+                }
+            });
+        }
+
+        // FEEDBACK UTILITIES
+        function toggleFeedback(isOpen) {
+            const drawer = document.getElementById('feedback-drawer');
+            const backdrop = document.getElementById('drawer-backdrop');
+            
+            if (isOpen) {
+                drawer.classList.remove('translate-y-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                drawer.classList.add('translate-y-full');
+                backdrop.classList.add('hidden');
+            }
+        }
+
+        function setRating(ratingValue) {
+            selectedRating = ratingValue;
+            const stars = document.querySelectorAll('.star-rating');
+            stars.forEach((star, index) => {
+                if (index < ratingValue) {
+                    star.classList.add('text-gold');
+                    star.classList.remove('text-stone-300');
+                } else {
+                    star.classList.remove('text-gold');
+                    star.classList.add('text-stone-300');
+                }
+            });
+        }
+
+        function sendFeedback(event) {
+            event.preventDefault();
+            const guestName = document.getElementById('fb-name').value;
+            const comments = document.getElementById('fb-comment').value;
+
+            const subject = encodeURIComponent("Grill Masters Royal Review — Guest Feedback");
+            const body = encodeURIComponent(
+                `Royal Guest Name: ${guestName}\n` +
+                `Luxury Star Rating: ${selectedRating} / 5 Stars\n\n` +
+                `Experience Feedback:\n"${comments}"\n\n` +
+                `Submitted via Grill Masters Digital Menu Agency`
+            );
+
+            // Execute client-side dispatch to karrranverma@gmail.com
+            window.location.href = `mailto:karrranverma@gmail.com?subject=${subject}&body=${body}`;
+            
+            // Clean up state
+            document.getElementById('fb-name').value = '';
+            document.getElementById('fb-comment').value = '';
+            setRating(5);
+            toggleFeedback(false);
+        }
+    </script>
+</body>
+</html>
+
+```
